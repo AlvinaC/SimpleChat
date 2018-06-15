@@ -28,7 +28,14 @@ dependencies {
     def constraintLib_version = "1.1.0"
     def espresso_version = "3.0.2"
     def testRunner_version = "1.0.2"
-
+    def rxjava2Version = "2.1.9"
+    def rxandroidVersion = "2.0.2"
+    def firestoreVersion = "17.0.1"
+    def firebaseCoreVersion = "16.0.0"
+    def firebaseAuthVersion = "16.0.1"
+    def firebaseUIAuthVersion = "4.0.0"
+    def playServicesVersion = "15.0.1"
+    def dagger2Version = '2.14.1'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "com.android.support:appcompat-v7:$supportLib_version"
@@ -43,4 +50,27 @@ dependencies {
 
     // Using Java8, use the following instead of compiler
     implementation "android.arch.lifecycle:common-java8:$lifecycle_version"
+
+    // reactive
+    implementation "io.reactivex.rxjava2:rxjava:$rxjava2Version"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxandroidVersion"
+
+    //firebase
+    implementation "com.google.firebase:firebase-firestore:$firestoreVersion"
+
+    // Other Firebase/Play services deps
+    implementation "com.google.firebase:firebase-core:$firebaseCoreVersion"
+    implementation "com.google.firebase:firebase-auth:$firebaseAuthVersion"
+    implementation "com.google.android.gms:play-services-auth:$playServicesVersion"
+
+    // FirebaseUI (for authentication)
+    implementation "com.firebaseui:firebase-ui-auth:$firebaseUIAuthVersion"
+
+    // dependency injection
+    implementation "com.google.dagger:dagger:$dagger2Version"
+    annotationProcessor "com.google.dagger:dagger-compiler:$dagger2Version"
+    annotationProcessor "com.google.dagger:dagger-android-processor:$dagger2Version"
+    implementation "com.google.dagger:dagger-android-support:$dagger2Version"
 }
+
+apply plugin: 'com.google.gms.google-services'

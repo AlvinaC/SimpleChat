@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:card_view="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.android.simplechat.viewmodel.LoginViewModel" />
+
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/splash"
@@ -9,11 +20,11 @@
 
         <android.support.v7.widget.CardView
             android:id="@+id/card_view"
+            card_view:cardBackgroundColor="@android:color/white"
+            card_view:cardCornerRadius="10dp"
             android:layout_width="250dp"
             android:layout_height="250dp"
-            android:layout_gravity="center"
-            card_view:cardBackgroundColor="@android:color/white"
-            card_view:cardCornerRadius="10dp">
+            android:layout_gravity="center">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -22,6 +33,7 @@
                 android:orientation="vertical">
 
                 <EditText
+                    android:id="@+id/etEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -29,6 +41,7 @@
                     android:hint="@string/hint_email" />
 
                 <EditText
+                    android:id="@+id/etPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
