@@ -64,7 +64,6 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewM
         mFragmentLoginBinding = getViewDataBinding();
     }
 
-
     @Override
     public AndroidInjector<Fragment> supportFragmentInjector() {
         return fragmentDispatchingAndroidInjector;

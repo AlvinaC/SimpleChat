@@ -1,5 +1,7 @@
 package com.android.simplechat.viewmodel;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
@@ -12,6 +14,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class LoginViewModel extends BaseViewModel {
+
+    private MutableLiveData<Boolean> userCreated = new MutableLiveData<>();
+
+    private MutableLiveData<Boolean> userSignedIn = new MutableLiveData<>();
 
     public LoginViewModel(SchedulerProvider schedulerProvider) {
         super(schedulerProvider);
@@ -38,8 +44,9 @@ public class LoginViewModel extends BaseViewModel {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-
+                            userCreated.setValue(true);
                         } else {
+                            userCreated.setValue(false);
                         }
 
                     }
@@ -70,9 +77,9 @@ public class LoginViewModel extends BaseViewModel {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-
+                            userSignedIn.setValue(true);
                         } else {
-
+                            userSignedIn.setValue(false);
                         }
                     }
                 });
