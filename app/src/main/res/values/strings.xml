@@ -4,4 +4,16 @@
     <string name="hint_password">Password</string>
     <string name="login">Login</string>
     <string name="register">New User?</string>
+
+    <!--snackbar message-->
+    <string name="message_login_1">Account created</string>
+    <string name="message_login_2">Account creation not successful</string>
+    <string name="message_login_3">Email sent for verification</string>
+    <string name="message_login_4">Email sending failed</string>
+    <string name="message_login_5">Log in successful</string>
+    <string name="message_login_6">Please verify your email</string>
+    <string name="message_login_7">Log in not successful</string>
+    <string name="message_login_8">Enter valid credentials</string>
+    <string name="message_login_9">There is a problem, please try again later</string>
+
 </resources>

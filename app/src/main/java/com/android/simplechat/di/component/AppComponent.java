@@ -27,10 +27,11 @@ import javax.inject.Singleton;
 import dagger.BindsInstance;
 import dagger.Component;
 import dagger.android.AndroidInjectionModule;
+import dagger.android.support.AndroidSupportInjectionModule;
 
 
 @Singleton
-@Component(modules = {AndroidInjectionModule.class, AppModule.class, LoginActivityModule.class})
+@Component(modules = {AndroidSupportInjectionModule.class, AppModule.class, LoginActivityModule.class})
 public interface AppComponent {
 
     @Component.Builder

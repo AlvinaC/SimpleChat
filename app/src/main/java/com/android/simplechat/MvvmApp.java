@@ -29,17 +29,21 @@ import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 
-public class MvvmApp extends Application implements HasActivityInjector {
+public class MvvmApp extends Application implements HasActivityInjector, HasSupportFragmentInjector {
 
     @Inject
-    DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
+    DispatchingAndroidInjector<Activity> dispatchingActivityInjector;
+
+    @Inject
+    DispatchingAndroidInjector<Fragment> dispatchingFragmentInjector;
 
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        DaggerAppComponent.builder()
+        DaggerAppComponent
+                .builder()
                 .application(this)
                 .build()
                 .inject(this);
@@ -48,8 +52,12 @@ public class MvvmApp extends Application implements HasActivityInjector {
 
     @Override
     public AndroidInjector<Activity> activityInjector() {
-        return dispatchingAndroidInjector;
+        return dispatchingActivityInjector;
     }
 
 
+    @Override
+    public AndroidInjector<Fragment> supportFragmentInjector() {
+        return dispatchingFragmentInjector;
+    }
 }

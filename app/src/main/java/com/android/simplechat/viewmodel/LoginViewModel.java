@@ -1,31 +1,29 @@
 package com.android.simplechat.viewmodel;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.android.simplechat.utils.CommonUtils;
+import com.android.simplechat.R;
 import com.android.simplechat.rx.SchedulerProvider;
-import com.android.simplechat.utils.SingleLiveEvent;
+import com.android.simplechat.utils.CommonUtils;
+import com.android.simplechat.utils.SnackbarMessage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.ProviderQueryResult;
+
+//http://www.zoftino.com/android-firebase-email-password-authentication
 
 public class LoginViewModel extends BaseViewModel {
-
-    private String email;
-    private String password;
 
     private MutableLiveData<Boolean> userCreated = new MutableLiveData<>();
 
     private MutableLiveData<Boolean> userSignedIn = new MutableLiveData<>();
 
-    private final SingleLiveEvent<Void> mLoginCommand = new SingleLiveEvent<>();
-
-    private final SingleLiveEvent<Void> mRegisterCommand = new SingleLiveEvent<>();
+    private final SnackbarMessage mSnackbarText = new SnackbarMessage();
 
     public LoginViewModel(SchedulerProvider schedulerProvider) {
         super(schedulerProvider);
@@ -45,34 +43,31 @@ public class LoginViewModel extends BaseViewModel {
         return true;
     }
 
-    public void onClick() {
-    }
-
     private void createAccount(String email, String password) {
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            userCreated.setValue(true);
+                            sendEmailVerification();
+                            setSnackbarMessage(R.string.message_login_1);
                         } else {
-                            userCreated.setValue(false);
+                            setSnackbarMessage(R.string.message_login_2);
                         }
                     }
                 });
     }
 
     private void sendEmailVerification() {
-
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         user.sendEmailVerification()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-
+                            setSnackbarMessage(R.string.message_login_3);
                         } else {
-
+                            setSnackbarMessage(R.string.message_login_4);
                         }
                     }
                 });
@@ -85,9 +80,44 @@ public class LoginViewModel extends BaseViewModel {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            userSignedIn.setValue(true);
+                            if (checkIfEmailVerified()) {
+                                setSnackbarMessage(R.string.message_login_5);
+                            } else {
+                                setSnackbarMessage(R.string.message_login_6);
+                            }
                         } else {
-                            userSignedIn.setValue(false);
+                            setSnackbarMessage(R.string.message_login_7);
+                        }
+                    }
+                });
+    }
+
+    private boolean checkIfEmailVerified() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user.isEmailVerified()) {
+            return true;
+        } else {
+            signOut();
+            return false;
+        }
+    }
+
+    public void performLoginOrAccountCreation(final String email, final String password) {
+        FirebaseAuth.getInstance().fetchProvidersForEmail(email).addOnCompleteListener(
+                new OnCompleteListener<ProviderQueryResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<ProviderQueryResult> task) {
+                        if (task.isSuccessful()) {
+                            ProviderQueryResult result = task.getResult();
+                            if (result != null && result.getProviders() != null
+                                    && result.getProviders().size() > 0) {
+                                signIn(email, password);
+                            } else {
+                                createAccount(email, password);
+                            }
+                        } else {
+                            setSnackbarMessage(R.string.message_login_9);
                         }
                     }
                 });
@@ -97,11 +127,12 @@ public class LoginViewModel extends BaseViewModel {
         FirebaseAuth.getInstance().signOut();
     }
 
-    public SingleLiveEvent<Void> getLoginCommand() {
-        return mLoginCommand;
+    public SnackbarMessage getSnackbarMessage() {
+        return mSnackbarText;
     }
 
-    public SingleLiveEvent<Void> getmRegisterCommand() {
-        return mRegisterCommand;
+    public void setSnackbarMessage(int message) {
+        mSnackbarText.setValue(message);
     }
+
 }

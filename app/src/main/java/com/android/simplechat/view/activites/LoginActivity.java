@@ -2,8 +2,10 @@ package com.android.simplechat.view.activites;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 
 import com.android.simplechat.BR;
 import com.android.simplechat.R;
@@ -38,6 +40,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivityLoginBinding = getViewDataBinding();
+        setUpActionBar();
 
         if (savedInstanceState == null) {
             LoginFragment fragment = new LoginFragment();
@@ -45,5 +48,16 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, fragment, LoginFragment.TAG).commit();
         }
+
+
+    }
+
+    private void setUpActionBar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setTitle(R.string.login);
     }
 }
