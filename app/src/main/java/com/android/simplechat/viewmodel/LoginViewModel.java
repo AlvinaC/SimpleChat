@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import com.android.simplechat.utils.CommonUtils;
 import com.android.simplechat.rx.SchedulerProvider;
+import com.android.simplechat.utils.SingleLiveEvent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -21,6 +22,10 @@ public class LoginViewModel extends BaseViewModel {
     private MutableLiveData<Boolean> userCreated = new MutableLiveData<>();
 
     private MutableLiveData<Boolean> userSignedIn = new MutableLiveData<>();
+
+    private final SingleLiveEvent<Void> mLoginCommand = new SingleLiveEvent<>();
+
+    private final SingleLiveEvent<Void> mRegisterCommand = new SingleLiveEvent<>();
 
     public LoginViewModel(SchedulerProvider schedulerProvider) {
         super(schedulerProvider);
@@ -90,5 +95,13 @@ public class LoginViewModel extends BaseViewModel {
 
     private void signOut() {
         FirebaseAuth.getInstance().signOut();
+    }
+
+    public SingleLiveEvent<Void> getLoginCommand() {
+        return mLoginCommand;
+    }
+
+    public SingleLiveEvent<Void> getmRegisterCommand() {
+        return mRegisterCommand;
     }
 }

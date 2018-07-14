@@ -68,4 +68,6 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewM
     public AndroidInjector<Fragment> supportFragmentInjector() {
         return fragmentDispatchingAndroidInjector;
     }
+
+
 }

@@ -38,8 +38,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:fontFamily="@string/font_family_light"
-                    android:hint="@string/hint_email"
-                    android:text="@={viewModel.email}" />
+                    android:hint="@string/hint_email" />
 
                 <EditText
                     android:id="@+id/etPassword"
@@ -47,13 +46,19 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:fontFamily="@string/font_family_light"
-                    android:hint="@string/hint_password"
-                    android:text="@={viewModel.password}" />
+                    android:hint="@string/hint_password" />
 
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    android:text="@string/login" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/register" />
                     android:onClick="@{(viewModel) -> viewModel.onClick()}"
                     android:text="@string/login" />
 
@@ -62,6 +67,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/register" />
             </LinearLayout>
+
         </android.support.v7.widget.CardView>
     </LinearLayout>
 
