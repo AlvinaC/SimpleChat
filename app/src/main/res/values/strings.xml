@@ -2,5 +2,6 @@
     <string name="app_name">SimpleChat</string>
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
-    <string name="btn_go">Go</string>
+    <string name="login">Login</string>
+    <string name="register">New User?</string>
 </resources>
