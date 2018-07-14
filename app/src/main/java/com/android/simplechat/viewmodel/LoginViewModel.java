@@ -15,6 +15,9 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginViewModel extends BaseViewModel {
 
+    private String email;
+    private String password;
+
     private MutableLiveData<Boolean> userCreated = new MutableLiveData<>();
 
     private MutableLiveData<Boolean> userSignedIn = new MutableLiveData<>();
@@ -37,8 +40,10 @@ public class LoginViewModel extends BaseViewModel {
         return true;
     }
 
-    private void createAccount(String email, String password) {
+    public void onClick() {
+    }
 
+    private void createAccount(String email, String password) {
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -48,7 +53,6 @@ public class LoginViewModel extends BaseViewModel {
                         } else {
                             userCreated.setValue(false);
                         }
-
                     }
                 });
     }
@@ -60,7 +64,6 @@ public class LoginViewModel extends BaseViewModel {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-
                         if (task.isSuccessful()) {
 
                         } else {
@@ -70,7 +73,7 @@ public class LoginViewModel extends BaseViewModel {
                 });
     }
 
-    private void signIn(String email, String password) {
+    public void signIn(String email, String password) {
 
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {

@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.android.simplechat.BR;
 import com.android.simplechat.R;
 import com.android.simplechat.databinding.FragmentLoginBinding;
+import com.android.simplechat.utils.AppConstants;
 import com.android.simplechat.viewmodel.LoginViewModel;
 
 import javax.inject.Inject;
@@ -49,19 +50,18 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewM
         return mLoginViewModel;
     }
 
-    public void login() {
-        String email = mFragmentLoginBinding.etEmail.getText().toString();
-        String password = mFragmentLoginBinding.etPassword.getText().toString();
-        if (mLoginViewModel.isEmailAndPasswordValid(email, password)) {
-        } else {
-            Toast.makeText(getActivity(), getString(R.string.app_name), Toast.LENGTH_SHORT).show();
-        }
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mFragmentLoginBinding = getViewDataBinding();
+        String email = mFragmentLoginBinding.etEmail.getText().toString();
+        String password = mFragmentLoginBinding.etPassword.getText().toString();
+        if (mLoginViewModel.isEmailAndPasswordValid(email, password)) {
+            hideKeyboard();
+            mLoginViewModel.signIn(email, password);
+        } else {
+            Toast.makeText(getBaseActivity(), "", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

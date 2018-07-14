@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import com.android.simplechat.view.activites.BaseActivity;
 import com.android.simplechat.viewmodel.BaseViewModel;
@@ -101,5 +102,16 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
 
         void onFragmentDetached(String tag);
     }
+
+    public void hideKeyboard() {
+        View view = getBaseActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getBaseActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+        }
+    }
+
 }
 
