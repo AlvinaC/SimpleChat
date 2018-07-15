@@ -1,8 +1,11 @@
 package com.android.simplechat.viewmodel;
 
 import android.arch.lifecycle.MutableLiveData;
+import android.databinding.BindingAdapter;
+import android.databinding.ObservableBoolean;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.view.View;
 
 import com.android.simplechat.R;
 import com.android.simplechat.rx.SchedulerProvider;
@@ -19,11 +22,9 @@ import com.google.firebase.auth.ProviderQueryResult;
 
 public class LoginViewModel extends BaseViewModel {
 
-    private MutableLiveData<Boolean> userCreated = new MutableLiveData<>();
-
-    private MutableLiveData<Boolean> userSignedIn = new MutableLiveData<>();
-
     private final SnackbarMessage mSnackbarText = new SnackbarMessage();
+
+    private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
 
     public LoginViewModel(SchedulerProvider schedulerProvider) {
         super(schedulerProvider);
@@ -44,10 +45,12 @@ public class LoginViewModel extends BaseViewModel {
     }
 
     private void createAccount(String email, String password) {
+        isLoading.setValue(true);
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        isLoading.setValue(false);
                         if (task.isSuccessful()) {
                             sendEmailVerification();
                             setSnackbarMessage(R.string.message_login_1);
@@ -59,11 +62,13 @@ public class LoginViewModel extends BaseViewModel {
     }
 
     private void sendEmailVerification() {
+        isLoading.setValue(true);
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         user.sendEmailVerification()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        isLoading.setValue(false);
                         if (task.isSuccessful()) {
                             setSnackbarMessage(R.string.message_login_3);
                         } else {
@@ -74,11 +79,12 @@ public class LoginViewModel extends BaseViewModel {
     }
 
     public void signIn(String email, String password) {
-
+        isLoading.setValue(true);
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        isLoading.setValue(false);
                         if (task.isSuccessful()) {
                             if (checkIfEmailVerified()) {
                                 setSnackbarMessage(R.string.message_login_5);
@@ -133,6 +139,10 @@ public class LoginViewModel extends BaseViewModel {
 
     public void setSnackbarMessage(int message) {
         mSnackbarText.setValue(message);
+    }
+
+    public MutableLiveData<Boolean> getLoadingStatus() {
+        return isLoading;
     }
 
 }
