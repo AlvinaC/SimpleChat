@@ -26,12 +26,9 @@ import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 
-public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewModel> implements HasSupportFragmentInjector {
+public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewModel> {
 
     public static String TAG = "LoginFragment";
-
-    @Inject
-    DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
 
     @Inject
     ViewModelProvider.Factory mViewModelFactory;
@@ -111,8 +108,4 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewM
         });
     }
 
-    @Override
-    public AndroidInjector<Fragment> supportFragmentInjector() {
-        return fragmentDispatchingAndroidInjector;
-    }
 }

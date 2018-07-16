@@ -16,9 +16,10 @@ import android.view.inputmethod.InputMethodManager;
 import com.android.simplechat.view.activites.BaseActivity;
 import com.android.simplechat.viewmodel.BaseViewModel;
 
-import dagger.android.support.AndroidSupportInjection;
+import dagger.android.support.DaggerFragment;
 
-public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseViewModel> extends Fragment {
+
+public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseViewModel> extends DaggerFragment {
 
     private BaseActivity mActivity;
     private View mRootView;
@@ -58,7 +59,6 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        performDependencyInjection();
         super.onCreate(savedInstanceState);
         mViewModel = getViewModel();
         setHasOptionsMenu(false);
@@ -92,9 +92,6 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
         return mViewDataBinding;
     }
 
-    private void performDependencyInjection() {
-        AndroidSupportInjection.inject(this);
-    }
 
     public interface Callback {
 

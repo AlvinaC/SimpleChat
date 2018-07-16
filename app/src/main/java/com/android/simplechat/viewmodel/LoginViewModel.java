@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.ProviderQueryResult;
 
 //http://www.zoftino.com/android-firebase-email-password-authentication
+//https://store.raywenderlich.com/products/design-patterns-by-tutorials
 
 public class LoginViewModel extends BaseViewModel {
 
