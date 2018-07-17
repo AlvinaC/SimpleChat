@@ -14,6 +14,8 @@ import android.support.v7.app.AppCompatActivity;
 import com.android.simplechat.view.fragments.BaseFragment;
 import com.android.simplechat.viewmodel.BaseViewModel;
 
+import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
 import dagger.android.DaggerActivity;
 import dagger.android.HasActivityInjector;
 import dagger.android.support.DaggerAppCompatActivity;
@@ -57,8 +59,13 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        performDependencyInjection();
         super.onCreate(savedInstanceState);
         performDataBinding();
+    }
+
+    public void performDependencyInjection() {
+        AndroidInjection.inject(this);
     }
 
     public T getViewDataBinding() {

@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.android.simplechat.viewmodel.LoginViewModel" />
+            type="com.android.simplechat.viewmodel.HomeViewModel" />
 
     </data>
 
@@ -18,13 +18,18 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/layout_toolbar" />
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/sliding_tabs"
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabMode="fixed" />
+            android:layout_height="wrap_content">
+
+            <include layout="@layout/layout_toolbar" />
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/sliding_tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabMode="fixed" />
+        </android.support.design.widget.AppBarLayout>
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager"
