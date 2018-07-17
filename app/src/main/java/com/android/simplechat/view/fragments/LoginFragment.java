@@ -3,6 +3,7 @@ package com.android.simplechat.view.fragments;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,6 +25,7 @@ import javax.inject.Inject;
 
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.AndroidSupportInjection;
 import dagger.android.support.HasSupportFragmentInjector;
 
 public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewModel> {
@@ -62,6 +64,7 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewM
 
     private void setUpProgress() {
         final ProgressBar progress = getActivity().findViewById(R.id.progress);
+        mLoginViewModel.setLoadingStatus(false);
         mLoginViewModel.getLoadingStatus().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean isLoading) {
@@ -108,4 +111,9 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewM
         });
     }
 
+    @Override
+    public void onAttach(Context context) {
+
+        super.onAttach(context);
+    }
 }

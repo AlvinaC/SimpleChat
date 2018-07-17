@@ -14,5 +14,6 @@ public abstract class ActivityBuilder {
     @ContributesAndroidInjector(modules = {LoginActivityModule.class})
     abstract LoginFragment bindLoginFragment();
 
-
+    @ContributesAndroidInjector(modules = {LoginActivityModule.class})
+    abstract LoginActivity bindLoginActivity();
 }

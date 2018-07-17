@@ -56,8 +56,9 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setTitle(R.string.login);
     }
+
 }

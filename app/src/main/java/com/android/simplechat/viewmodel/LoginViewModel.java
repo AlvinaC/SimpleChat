@@ -46,12 +46,12 @@ public class LoginViewModel extends BaseViewModel {
     }
 
     private void createAccount(String email, String password) {
-        isLoading.setValue(true);
+        setLoadingStatus(true);
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        isLoading.setValue(false);
+                        setLoadingStatus(false);
                         if (task.isSuccessful()) {
                             sendEmailVerification();
                             setSnackbarMessage(R.string.message_login_1);
@@ -63,13 +63,13 @@ public class LoginViewModel extends BaseViewModel {
     }
 
     private void sendEmailVerification() {
-        isLoading.setValue(true);
+        setLoadingStatus(true);
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         user.sendEmailVerification()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        isLoading.setValue(false);
+                        setLoadingStatus(false);
                         if (task.isSuccessful()) {
                             setSnackbarMessage(R.string.message_login_3);
                         } else {
@@ -80,12 +80,12 @@ public class LoginViewModel extends BaseViewModel {
     }
 
     public void signIn(String email, String password) {
-        isLoading.setValue(true);
+        setLoadingStatus(true);
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        isLoading.setValue(false);
+                        setLoadingStatus(false);
                         if (task.isSuccessful()) {
                             if (checkIfEmailVerified()) {
                                 setSnackbarMessage(R.string.message_login_5);
@@ -144,6 +144,10 @@ public class LoginViewModel extends BaseViewModel {
 
     public MutableLiveData<Boolean> getLoadingStatus() {
         return isLoading;
+    }
+
+    public void setLoadingStatus(Boolean val) {
+        isLoading.setValue(val);
     }
 
 }
