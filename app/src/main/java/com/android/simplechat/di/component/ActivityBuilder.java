@@ -6,6 +6,7 @@ import com.android.simplechat.di.module.LoginActivityModule;
 import com.android.simplechat.view.activites.HomeActivity;
 import com.android.simplechat.view.activites.LoginActivity;
 import com.android.simplechat.view.fragments.LoginFragment;
+import com.android.simplechat.view.fragments.UserListFragment;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -21,4 +22,7 @@ public abstract class ActivityBuilder {
 
     @ContributesAndroidInjector(modules = {HomeActivityModule.class})
     abstract HomeActivity bindHomeActivity();
+
+    @ContributesAndroidInjector(modules = {HomeActivityModule.class})
+    abstract UserListFragment bindUserListFragment();
 }

@@ -8,11 +8,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.android.simplechat.BR;
 import com.android.simplechat.R;
@@ -22,11 +20,6 @@ import com.android.simplechat.utils.SnackbarUtils;
 import com.android.simplechat.viewmodel.LoginViewModel;
 
 import javax.inject.Inject;
-
-import dagger.android.AndroidInjector;
-import dagger.android.DispatchingAndroidInjector;
-import dagger.android.support.AndroidSupportInjection;
-import dagger.android.support.HasSupportFragmentInjector;
 
 public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewModel> {
 
@@ -79,7 +72,7 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewM
     }
 
     private void setUpLogin() {
-        Button login = getActivity().findViewById(R.id.btn_login);
+        final Button login = getActivity().findViewById(R.id.btn_login);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,7 +106,7 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewM
 
     @Override
     public void onAttach(Context context) {
-
         super.onAttach(context);
     }
+
 }

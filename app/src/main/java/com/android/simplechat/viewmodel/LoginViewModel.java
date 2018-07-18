@@ -5,18 +5,25 @@ import android.databinding.BindingAdapter;
 import android.databinding.ObservableBoolean;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import com.android.simplechat.R;
+import com.android.simplechat.model.User;
 import com.android.simplechat.rx.SchedulerProvider;
 import com.android.simplechat.utils.CommonUtils;
 import com.android.simplechat.utils.SnackbarMessage;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.ProviderQueryResult;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import static com.android.simplechat.view.fragments.LoginFragment.TAG;
 
 //http://www.zoftino.com/android-firebase-email-password-authentication
 //https://store.raywenderlich.com/products/design-patterns-by-tutorials
@@ -27,8 +34,16 @@ public class LoginViewModel extends BaseViewModel {
 
     private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
 
+    private MutableLiveData<Boolean> userSignedIn = new MutableLiveData<>();
+
     public LoginViewModel(SchedulerProvider schedulerProvider) {
         super(schedulerProvider);
+        init();
+    }
+
+    private void init() {
+        setLoadingStatus(false);
+        setSignInStatus(false);
     }
 
     public boolean isEmailAndPasswordValid(String email, String password) {
@@ -62,6 +77,30 @@ public class LoginViewModel extends BaseViewModel {
                 });
     }
 
+    private void writeToFirestore(FirebaseUser currentUser) {
+        User user = new User();
+        user.setName(currentUser.getDisplayName());
+        user.setEmail(currentUser.getEmail());
+        user.setUid(currentUser.getUid());
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users").document(currentUser.getUid())
+                .set(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        setSnackbarMessage(R.string.message_login_5);
+                        setSignInStatus(true);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        setSnackbarMessage(R.string.message_login_7);
+                    }
+                });
+    }
+
     private void sendEmailVerification() {
         setLoadingStatus(true);
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -88,7 +127,7 @@ public class LoginViewModel extends BaseViewModel {
                         setLoadingStatus(false);
                         if (task.isSuccessful()) {
                             if (checkIfEmailVerified()) {
-                                setSnackbarMessage(R.string.message_login_5);
+                                writeToFirestore(FirebaseAuth.getInstance().getCurrentUser());
                             } else {
                                 setSnackbarMessage(R.string.message_login_6);
                             }
@@ -148,6 +187,14 @@ public class LoginViewModel extends BaseViewModel {
 
     public void setLoadingStatus(Boolean val) {
         isLoading.setValue(val);
+    }
+
+    public void setSignInStatus(Boolean val) {
+        userSignedIn.setValue(val);
+    }
+
+    public MutableLiveData<Boolean> getSignInStatus() {
+        return userSignedIn;
     }
 
 }

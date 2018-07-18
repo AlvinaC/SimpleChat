@@ -5,6 +5,10 @@
     <string name="login">Login</string>
     <string name="register">New User?</string>
 
+    <!--tabs-->
+    <string name="tab_1">Users</string>
+
+
     <!--snackbar message-->
     <string name="message_login_1">Account created</string>
     <string name="message_login_2">Account creation not successful</string>

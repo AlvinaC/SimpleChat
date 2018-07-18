@@ -1,11 +1,14 @@
 package com.android.simplechat.view.activites;
 
+import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.android.simplechat.BR;
 import com.android.simplechat.R;
@@ -41,6 +44,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
         super.onCreate(savedInstanceState);
         mActivityLoginBinding = getViewDataBinding();
         setUpActionBar();
+        setUpLogin();
 
         if (savedInstanceState == null) {
             LoginFragment fragment = new LoginFragment();
@@ -52,6 +56,19 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
 
     }
 
+    private void setUpLogin() {
+        mLoginViewModel.getSignInStatus().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean isSignedIn) {
+                if (isSignedIn != null) {
+                    if (isSignedIn) {
+                        openMainActivity();
+                    }
+                }
+            }
+        });
+    }
+
     private void setUpActionBar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,6 +76,12 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
         actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setTitle(R.string.login);
+    }
+
+    public void openMainActivity() {
+        Intent intent = HomeActivity.newIntent(LoginActivity.this);
+        startActivity(intent);
+        finish();
     }
 
 }
