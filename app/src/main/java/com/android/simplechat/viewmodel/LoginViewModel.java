@@ -1,12 +1,8 @@
 package com.android.simplechat.viewmodel;
 
 import android.arch.lifecycle.MutableLiveData;
-import android.databinding.BindingAdapter;
-import android.databinding.ObservableBoolean;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
 
 import com.android.simplechat.R;
 import com.android.simplechat.model.User;
@@ -22,8 +18,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.ProviderQueryResult;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import static com.android.simplechat.view.fragments.LoginFragment.TAG;
 
 //http://www.zoftino.com/android-firebase-email-password-authentication
 //https://store.raywenderlich.com/products/design-patterns-by-tutorials

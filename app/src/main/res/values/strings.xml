@@ -20,4 +20,9 @@
     <string name="message_login_8">Enter valid credentials</string>
     <string name="message_login_9">There is a problem, please try again later</string>
 
+    <!--empty state-->
+    <string name="empty_screen">We do not have anything\nhere right now.</string>
+    <string name="please_retry">Please Retry</string>
+    <string name="retry">Retry</string>
+
 </resources>

@@ -10,12 +10,14 @@ import android.support.v4.view.ViewPager;
 import com.android.simplechat.BR;
 import com.android.simplechat.R;
 import com.android.simplechat.databinding.ActivityHomeBinding;
-import com.android.simplechat.view.MainPagerAdapter;
+import com.android.simplechat.view.adapter.MainPagerAdapter;
 import com.android.simplechat.viewmodel.HomeViewModel;
 
 import javax.inject.Inject;
 
 public class HomeActivity extends BaseActivity<ActivityHomeBinding, HomeViewModel> {
+
+    public static String TAG = "HomeActivity";
 
     @Inject
     HomeViewModel mHomeViewModel;

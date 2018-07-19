@@ -12,7 +12,7 @@ import android.view.View;
 import com.android.simplechat.BR;
 import com.android.simplechat.R;
 import com.android.simplechat.databinding.FragmentUserlistBinding;
-import com.android.simplechat.view.MainPagerAdapter;
+import com.android.simplechat.view.adapter.UserListAdapter;
 import com.android.simplechat.viewmodel.HomeViewModel;
 
 import javax.inject.Inject;
@@ -27,9 +27,11 @@ public class UserListFragment extends BaseFragment<FragmentUserlistBinding, Home
     @Inject
     LinearLayoutManager mLayoutManager;
 
+    @Inject
+    UserListAdapter mAdapter;
+
     private HomeViewModel mHomeViewModel;
     private FragmentUserlistBinding mFragmentUserListBinding;
-
 
     @Override
     public int getBindingVariable() {
@@ -58,13 +60,14 @@ public class UserListFragment extends BaseFragment<FragmentUserlistBinding, Home
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mFragmentUserListBinding = getViewDataBinding();
+        setUp();
     }
 
     private void setUp() {
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        /*mFragmentUserListBinding.user_rcv.setLayoutManager(mLayoutManager);
-        mFragmentOpenSourceBinding.openSourceRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mFragmentOpenSourceBinding.openSourceRecyclerView.setAdapter(mOpenSourceAdapter);*/
+        mFragmentUserListBinding.userRcv.setLayoutManager(mLayoutManager);
+        mFragmentUserListBinding.userRcv.setItemAnimator(new DefaultItemAnimator());
+        mFragmentUserListBinding.userRcv.setAdapter(mAdapter);
     }
 
 }

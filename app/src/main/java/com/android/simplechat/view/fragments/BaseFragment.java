@@ -17,8 +17,6 @@ import com.android.simplechat.view.activites.BaseActivity;
 import com.android.simplechat.viewmodel.BaseViewModel;
 
 import dagger.android.support.AndroidSupportInjection;
-import dagger.android.support.DaggerFragment;
-
 
 public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseViewModel> extends Fragment {
 
@@ -93,7 +91,6 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
     public T getViewDataBinding() {
         return mViewDataBinding;
     }
-
 
     public interface Callback {
 

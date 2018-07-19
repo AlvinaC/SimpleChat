@@ -5,11 +5,11 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import com.android.simplechat.rx.SchedulerProvider;
 import com.android.simplechat.utils.ViewModelProviderFactory;
-import com.android.simplechat.view.MainPagerAdapter;
 import com.android.simplechat.view.activites.HomeActivity;
+import com.android.simplechat.view.adapter.MainPagerAdapter;
+import com.android.simplechat.view.adapter.UserListAdapter;
 import com.android.simplechat.view.fragments.UserListFragment;
 import com.android.simplechat.viewmodel.HomeViewModel;
-import com.android.simplechat.viewmodel.LoginViewModel;
 
 import dagger.Module;
 import dagger.Provides;
@@ -35,5 +35,10 @@ public class HomeActivityModule {
     @Provides
     LinearLayoutManager provideLinearLayoutManager(UserListFragment fragment) {
         return new LinearLayoutManager(fragment.getActivity());
+    }
+
+    @Provides
+    UserListAdapter provideUserListAdapter() {
+        return new UserListAdapter();
     }
 }

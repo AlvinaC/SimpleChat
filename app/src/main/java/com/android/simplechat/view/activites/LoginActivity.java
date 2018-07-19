@@ -20,6 +20,8 @@ import javax.inject.Inject;
 
 public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewModel> {
 
+    public static String TAG = "LoginActivity";
+
     @Inject
     LoginViewModel mLoginViewModel;
     private ActivityLoginBinding mActivityLoginBinding;
