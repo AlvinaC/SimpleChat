@@ -4,6 +4,7 @@
     <string name="hint_password">Password</string>
     <string name="login">Login</string>
     <string name="register">New User?</string>
+    <string name="home">Home</string>
 
     <!--tabs-->
     <string name="tab_1">Users</string>

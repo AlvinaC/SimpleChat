@@ -43,7 +43,7 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewM
 
     @Override
     public LoginViewModel getViewModel() {
-        mLoginViewModel = ViewModelProviders.of(this, mViewModelFactory).get(LoginViewModel.class);
+        mLoginViewModel = ViewModelProviders.of(getActivity(), mViewModelFactory).get(LoginViewModel.class);
         return mLoginViewModel;
     }
 
@@ -57,7 +57,6 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewM
 
     private void setUpProgress() {
         final ProgressBar progress = getActivity().findViewById(R.id.progress);
-        mLoginViewModel.setLoadingStatus(false);
         mLoginViewModel.getLoadingStatus().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean isLoading) {

@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 
 import com.android.simplechat.BR;
 import com.android.simplechat.R;
@@ -50,6 +52,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding, HomeViewMode
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivityHomeBinding = getViewDataBinding();
+        setUpActionBar();
         setUpViewPager();
     }
 
@@ -57,7 +60,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding, HomeViewMode
         final ViewPager viewPager = findViewById(R.id.viewpager);
         final TabLayout tabLayout = findViewById(R.id.sliding_tabs);
 
-        pagerAdapter.setCount(2);
+        pagerAdapter.setCount(1);
 
         viewPager.setAdapter(pagerAdapter);
 
@@ -83,6 +86,15 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding, HomeViewMode
 
             }
         });
+    }
+
+    private void setUpActionBar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setDisplayShowHomeEnabled(false);
+        actionBar.setTitle(R.string.home);
     }
 
 }

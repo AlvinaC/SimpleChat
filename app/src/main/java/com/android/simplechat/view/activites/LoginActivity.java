@@ -1,14 +1,13 @@
 package com.android.simplechat.view.activites;
 
 import android.arch.lifecycle.Observer;
-import android.content.Context;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import com.android.simplechat.BR;
 import com.android.simplechat.R;
@@ -23,6 +22,8 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
     public static String TAG = "LoginActivity";
 
     @Inject
+    ViewModelProvider.Factory mViewModelFactory;
+
     LoginViewModel mLoginViewModel;
     private ActivityLoginBinding mActivityLoginBinding;
 
@@ -38,6 +39,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
 
     @Override
     public LoginViewModel getViewModel() {
+        mLoginViewModel = ViewModelProviders.of(this, mViewModelFactory).get(LoginViewModel.class);
         return mLoginViewModel;
     }
 
@@ -54,8 +56,6 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, fragment, LoginFragment.TAG).commit();
         }
-
-
     }
 
     private void setUpLogin() {

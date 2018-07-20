@@ -61,6 +61,7 @@ public class UserListFragment extends BaseFragment<FragmentUserlistBinding, Home
         super.onViewCreated(view, savedInstanceState);
         mFragmentUserListBinding = getViewDataBinding();
         setUp();
+        subscribeToLiveData();
     }
 
     private void setUp() {
@@ -68,6 +69,11 @@ public class UserListFragment extends BaseFragment<FragmentUserlistBinding, Home
         mFragmentUserListBinding.userRcv.setLayoutManager(mLayoutManager);
         mFragmentUserListBinding.userRcv.setItemAnimator(new DefaultItemAnimator());
         mFragmentUserListBinding.userRcv.setAdapter(mAdapter);
+    }
+
+    private void subscribeToLiveData() {
+        mHomeViewModel.getRepos().observe(this,
+                ItemViewModels -> mHomeViewModel.addItemsToList(ItemViewModels));
     }
 
 }
