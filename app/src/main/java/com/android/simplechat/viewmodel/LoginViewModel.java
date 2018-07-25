@@ -30,6 +30,8 @@ public class LoginViewModel extends BaseViewModel {
 
     private MutableLiveData<Boolean> userSignedIn = new MutableLiveData<>();
 
+    private MutableLiveData<Boolean> isnewUser = new MutableLiveData<>();
+
     public LoginViewModel(SchedulerProvider schedulerProvider) {
         super(schedulerProvider);
         init();
@@ -38,6 +40,7 @@ public class LoginViewModel extends BaseViewModel {
     private void init() {
         setLoadingStatus(false);
         setSignInStatus(false);
+        setNewUserStatus(false);
     }
 
     public boolean isEmailAndPasswordValid(String email, String password) {
@@ -185,6 +188,10 @@ public class LoginViewModel extends BaseViewModel {
 
     public void setSignInStatus(Boolean val) {
         userSignedIn.setValue(val);
+    }
+
+    public void setNewUserStatus(Boolean val) {
+        isnewUser.setValue(val);
     }
 
     public MutableLiveData<Boolean> getSignInStatus() {

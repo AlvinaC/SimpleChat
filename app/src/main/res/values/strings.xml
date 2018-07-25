@@ -2,6 +2,7 @@
     <string name="app_name">SimpleChat</string>
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
+    <string name="hint_name">Name</string>
     <string name="login">Login</string>
     <string name="register">New User?</string>
     <string name="home">Home</string>

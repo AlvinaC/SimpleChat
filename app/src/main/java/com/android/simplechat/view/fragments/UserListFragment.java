@@ -1,5 +1,6 @@
 package com.android.simplechat.view.fragments;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
@@ -14,6 +15,9 @@ import com.android.simplechat.R;
 import com.android.simplechat.databinding.FragmentUserlistBinding;
 import com.android.simplechat.view.adapter.UserListAdapter;
 import com.android.simplechat.viewmodel.HomeViewModel;
+import com.android.simplechat.viewmodel.ItemViewModel;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -72,8 +76,12 @@ public class UserListFragment extends BaseFragment<FragmentUserlistBinding, Home
     }
 
     private void subscribeToLiveData() {
-        mHomeViewModel.getRepos().observe(this,
-                ItemViewModels -> mHomeViewModel.addItemsToList(ItemViewModels));
+        mHomeViewModel.getRepos().observe(this, new Observer<List<ItemViewModel>>() {
+            @Override
+            public void onChanged(@Nullable List<ItemViewModel> list) {
+                mFragmentUserListBinding.userRcv.getAdapter().notifyDataSetChanged();
+            }
+        });
     }
 
 }

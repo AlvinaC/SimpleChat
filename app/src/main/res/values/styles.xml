@@ -24,7 +24,7 @@
     </style>
 
     <style name="Toolbar.TitleText" parent="TextStyle.Heading">
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">22sp</item>
     </style>
 

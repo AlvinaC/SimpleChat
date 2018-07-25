@@ -6,6 +6,7 @@ import android.databinding.ObservableList;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.android.simplechat.model.User;
 import com.android.simplechat.rx.SchedulerProvider;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
@@ -23,6 +24,10 @@ public class HomeViewModel extends BaseViewModel {
 
     private final ObservableList<ItemViewModel> itemViewModels = new ObservableArrayList<>();
 
+    public ObservableList<ItemViewModel> getItemViewModels() {
+        return itemViewModels;
+    }
+
     public HomeViewModel(SchedulerProvider schedulerProvider) {
         super(schedulerProvider);
         init();
@@ -30,10 +35,6 @@ public class HomeViewModel extends BaseViewModel {
 
     public void init() {
         setUpUserListListener();
-    }
-
-    public void addItemsToList(ItemViewModel items) {
-        itemViewModels.add(items);
     }
 
     public void setUpUserListListener() {
@@ -51,17 +52,14 @@ public class HomeViewModel extends BaseViewModel {
                         for (DocumentChange dc : snapshots.getDocumentChanges()) {
                             if (dc.getType() == DocumentChange.Type.ADDED) {
                                 Log.d(TAG, "New user: " + dc.getDocument().getData());
-                                itemViewModels.add(dc.getDocument().getData());
+                                itemViewModels.add(new ItemViewModel(dc.getDocument().toObject(User.class)));
                             }
                         }
-
+                        itemsLiveData.setValue(getItemViewModels());
                     }
                 });
     }
 
-    public ObservableList<ItemViewModel> getOpenSourceItemViewModels() {
-        return itemViewModels;
-    }
 
     public MutableLiveData<List<ItemViewModel>> getRepos() {
         return itemsLiveData;
