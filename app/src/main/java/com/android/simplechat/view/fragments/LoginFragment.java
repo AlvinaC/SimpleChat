@@ -11,7 +11,6 @@ import android.support.annotation.StringRes;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.android.simplechat.BR;
 import com.android.simplechat.R;
@@ -54,11 +53,6 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewM
         setUpLogin();
         setupSnackbar();
         setUpProgress();
-        setUpNewUserUI();
-    }
-
-    private void setUpNewUserUI() {
-        final TextView newUser = getActivity().findViewById(R.id.txt_new_user);
     }
 
     private void setUpProgress() {

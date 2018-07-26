@@ -27,4 +27,8 @@
     <string name="please_retry">Please Retry</string>
     <string name="retry">Retry</string>
 
+    <!--chat-->
+    <string name="start_chatting">No messages. Start chatting at the bottom!</string>
+    <string name="hint_message">Say something…</string>
+    <string name="send">Send</string>
 </resources>

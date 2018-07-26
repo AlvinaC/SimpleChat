@@ -1,7 +1,6 @@
 package com.android.simplechat.view.activites;
 
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -15,10 +14,6 @@ import com.android.simplechat.view.fragments.BaseFragment;
 import com.android.simplechat.viewmodel.BaseViewModel;
 
 import dagger.android.AndroidInjection;
-import dagger.android.AndroidInjector;
-import dagger.android.DaggerActivity;
-import dagger.android.HasActivityInjector;
-import dagger.android.support.DaggerAppCompatActivity;
 
 public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseViewModel> extends AppCompatActivity
         implements BaseFragment.Callback {

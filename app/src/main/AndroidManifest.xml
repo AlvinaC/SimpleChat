@@ -19,7 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.activites.HomeActivity"></activity>
+        <activity
+            android:name=".view.activites.HomeActivity"
+            android:launchMode="singleInstance"></activity>
     </application>
 
 </manifest>
