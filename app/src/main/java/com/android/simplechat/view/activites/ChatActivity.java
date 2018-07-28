@@ -15,7 +15,6 @@ import com.android.simplechat.R;
 import com.android.simplechat.databinding.ActivityChatBinding;
 import com.android.simplechat.view.adapter.UserListAdapter;
 import com.android.simplechat.viewmodel.ChatViewModel;
-import com.android.simplechat.viewmodel.LoginViewModel;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
