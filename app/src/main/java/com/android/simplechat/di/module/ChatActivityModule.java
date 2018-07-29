@@ -7,7 +7,6 @@ import com.android.simplechat.model.Chat;
 import com.android.simplechat.rx.SchedulerProvider;
 import com.android.simplechat.utils.ViewModelProviderFactory;
 import com.android.simplechat.view.activites.ChatActivity;
-import com.android.simplechat.view.fragments.UserListFragment;
 import com.android.simplechat.viewmodel.ChatViewModel;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
@@ -18,6 +17,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.disposables.CompositeDisposable;
 
 @Module
 public class ChatActivityModule {
@@ -55,5 +55,10 @@ public class ChatActivityModule {
                 .setQuery(query, Chat.class)
                 .setLifecycleOwner(activity)
                 .build();
+    }
+
+    @Provides
+    CompositeDisposable provideCompositeDisposable() {
+        return new CompositeDisposable();
     }
 }
