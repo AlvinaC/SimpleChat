@@ -4,9 +4,11 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.support.v7.widget.LinearLayoutManager;
 
 import com.android.simplechat.model.Chat;
+import com.android.simplechat.rx.RxBus;
 import com.android.simplechat.rx.SchedulerProvider;
 import com.android.simplechat.utils.ViewModelProviderFactory;
 import com.android.simplechat.view.activites.ChatActivity;
+import com.android.simplechat.view.adapter.ChatFirestoreAdapter;
 import com.android.simplechat.viewmodel.ChatViewModel;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
@@ -60,5 +62,10 @@ public class ChatActivityModule {
     @Provides
     CompositeDisposable provideCompositeDisposable() {
         return new CompositeDisposable();
+    }
+
+    @Provides
+    ChatFirestoreAdapter provideChatFirestoreAdapter(ChatActivity activity, FirestoreRecyclerOptions<Chat> options, RxBus bus) {
+        return new ChatFirestoreAdapter(activity, options, bus);
     }
 }

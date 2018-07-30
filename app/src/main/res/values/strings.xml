@@ -31,4 +31,5 @@
     <string name="start_chatting">No messages. Start chatting at the bottom!</string>
     <string name="hint_message">Say something…</string>
     <string name="send">Send</string>
+    <string name="signing_in">Signing in…</string>
 </resources>

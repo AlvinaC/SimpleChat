@@ -5,32 +5,37 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.CalendarContract;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import com.android.simplechat.BR;
-import com.android.simplechat.MvvmApp;
 import com.android.simplechat.R;
 import com.android.simplechat.databinding.ActivityChatBinding;
+import com.android.simplechat.model.Chat;
+import com.android.simplechat.model.Events;
 import com.android.simplechat.rx.AppSchedulerProvider;
 import com.android.simplechat.rx.RxBus;
-import com.android.simplechat.view.adapter.UserListAdapter;
+import com.android.simplechat.rx.SchedulerProvider;
+import com.android.simplechat.view.adapter.ChatFirestoreAdapter;
 import com.android.simplechat.viewmodel.ChatViewModel;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 
 import javax.inject.Inject;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
-public class ChatActivity extends BaseActivity<ActivityChatBinding, ChatViewModel> {
+public class ChatActivity extends BaseActivity<ActivityChatBinding, ChatViewModel> implements FirebaseAuth.AuthStateListener {
 
     public static String TAG = "ChatActivity";
 
@@ -45,16 +50,19 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding, ChatViewMode
     LinearLayoutManager mLayoutManager;
 
     @Inject
-    UserListAdapter mAdapter;
-
-    @Inject
     CompositeDisposable disposable;
 
     @Inject
     RxBus bus;
 
     @Inject
-    AppSchedulerProvider schedulerProvider;
+    SchedulerProvider schedulerProvider;
+
+    @Inject
+    ChatFirestoreAdapter adapter;
+
+    @Inject
+    CollectionReference colRef;
 
     @Override
     public int getBindingVariable() {
@@ -69,12 +77,6 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding, ChatViewMode
     static {
         FirebaseFirestore.setLoggingEnabled(true);
     }
-
-    private static final CollectionReference sChatCollection =
-            FirebaseFirestore.getInstance().collection("chats");
-
-    private static final Query sChatQuery =
-            sChatCollection.orderBy("timestamp", Query.Direction.DESCENDING).limit(50);
 
     public static Intent newIntent(Context context) {
         Intent intent = new Intent(context, ChatActivity.class);
@@ -93,6 +95,46 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding, ChatViewMode
         mActivityChatBinding = getViewDataBinding();
         setUpActionBar();
         registerEventBus();
+        setUpLayoutManager();
+        setUpRecyclerView();
+        setUpSend();
+    }
+
+    private void setUpSend() {
+        mActivityChatBinding.sendButton.setOnClickListener(new View.OnClickListener() {
+                                                               @Override
+                                                               public void onClick(View v) {
+                                                                   String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                                                   String name = "User " + uid.substring(0, 6);
+                                                                   onAddMessage(new Chat(name, mActivityChatBinding.messageEdit.getText().toString(), uid));
+                                                                   mActivityChatBinding.messageEdit.setText("");
+                                                               }
+                                                           }
+        );
+    }
+
+    private void setUpRecyclerView() {
+        mActivityChatBinding.messagesList.setHasFixedSize(true);
+        mActivityChatBinding.messagesList.setLayoutManager(mLayoutManager);
+        mActivityChatBinding.messagesList.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View view, int left, int top, int right, int bottom,
+                                       int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if (bottom < oldBottom) {
+                    mActivityChatBinding.messagesList.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mActivityChatBinding.messagesList.smoothScrollToPosition(0);
+                        }
+                    }, 100);
+                }
+            }
+        });
+    }
+
+    private void setUpLayoutManager() {
+        mLayoutManager.setReverseLayout(true);
+        mLayoutManager.setStackFromEnd(true);
     }
 
     private void registerEventBus() {
@@ -104,6 +146,9 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding, ChatViewMode
                         .subscribe(new Consumer<Object>() {
                             @Override
                             public void accept(Object object) throws Exception {
+                                Events.DataChangeEvent obj = (Events.DataChangeEvent) object;
+                                TextView mEmptyListMessage = findViewById(R.id.emptyTextView);
+                                mEmptyListMessage.setVisibility(obj.getItemCount() == 0 ? View.VISIBLE : View.GONE);
                             }
                         }));
 
@@ -116,6 +161,56 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding, ChatViewMode
         actionBar.setDisplayHomeAsUpEnabled(false);
         actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setTitle(R.string.home);
+    }
+
+    protected void onAddMessage(Chat chat) {
+        colRef.add(chat).addOnFailureListener(this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(TAG, "Failed to write message", e);
+            }
+        });
+    }
+
+    @Override
+    public void onAuthStateChanged(@NonNull FirebaseAuth auth) {
+        mActivityChatBinding.sendButton.setEnabled(isSignedIn());
+        mActivityChatBinding.messageEdit.setEnabled(isSignedIn());
+
+        if (isSignedIn()) {
+            attachRecyclerViewAdapter();
+        }
+    }
+
+    private boolean isSignedIn() {
+        return FirebaseAuth.getInstance().getCurrentUser() != null;
+    }
+
+    private void attachRecyclerViewAdapter() {
+        adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                mActivityChatBinding.messagesList.smoothScrollToPosition(0);
+            }
+        });
+
+        mActivityChatBinding.messagesList.setAdapter(adapter);
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (isSignedIn()) {
+            attachRecyclerViewAdapter();
+        }
+        FirebaseAuth.getInstance().addAuthStateListener(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FirebaseAuth.getInstance().removeAuthStateListener(this);
     }
 
     @Override
