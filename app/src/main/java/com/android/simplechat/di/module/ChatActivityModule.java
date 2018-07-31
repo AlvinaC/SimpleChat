@@ -21,6 +21,12 @@ import dagger.Module;
 import dagger.Provides;
 import io.reactivex.disposables.CompositeDisposable;
 
+//https://stackoverflow.com/questions/49783392/dagger-2-error-subcomponent-may-not-reference-scoped-bindings
+// here is a good explanation of contributesandroidinjector for the error
+// "Subcomponent (unscoped) may not reference scoped bindings:"
+
+//https://medium.com/@budioktaviyans/dependency-injection-on-android-5d939df17214
+
 @Module
 public class ChatActivityModule {
 

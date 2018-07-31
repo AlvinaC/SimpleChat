@@ -20,7 +20,6 @@ import com.android.simplechat.R;
 import com.android.simplechat.databinding.ActivityChatBinding;
 import com.android.simplechat.model.Chat;
 import com.android.simplechat.model.Events;
-import com.android.simplechat.rx.AppSchedulerProvider;
 import com.android.simplechat.rx.RxBus;
 import com.android.simplechat.rx.SchedulerProvider;
 import com.android.simplechat.view.adapter.ChatFirestoreAdapter;

@@ -12,8 +12,8 @@ import dagger.android.DaggerApplication;
 import dagger.android.support.AndroidSupportInjectionModule;
 
 
-@Singleton
 @Component(modules = {AndroidSupportInjectionModule.class, AppModule.class, ActivityBuilder.class})
+@Singleton
 public interface AppComponent extends AndroidInjector<DaggerApplication> {
 
     void inject(MvvmApp mvvmApp);
