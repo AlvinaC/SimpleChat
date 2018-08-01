@@ -3,6 +3,7 @@ package com.android.simplechat.di.module;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.v7.widget.LinearLayoutManager;
 
+import com.android.simplechat.di.scope.ActivityScope;
 import com.android.simplechat.model.Chat;
 import com.android.simplechat.rx.RxBus;
 import com.android.simplechat.rx.SchedulerProvider;
@@ -45,13 +46,13 @@ public class ChatActivityModule {
         return new LinearLayoutManager(activity);
     }
 
-    @Singleton
+    @ActivityScope
     @Provides
     CollectionReference provideCollectionReference() {
         return FirebaseFirestore.getInstance().collection("chats");
     }
 
-    @Singleton
+    @ActivityScope
     @Provides
     Query provideQuery(CollectionReference ref) {
         return ref.orderBy("timestamp", Query.Direction.DESCENDING).limit(50);

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.android.simplechat.databinding.ItemEmptyViewBinding;
 import com.android.simplechat.databinding.ItemViewBinding;
+import com.android.simplechat.view.activites.ChatActivity;
 import com.android.simplechat.viewmodel.EmptyItemViewModel;
 import com.android.simplechat.viewmodel.ItemViewModel;
 
@@ -127,7 +128,7 @@ public class UserListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
         @Override
         public void onClick(View view) {
-
+            ChatActivity.openChatActivity(view.getContext());
         }
     }
 }

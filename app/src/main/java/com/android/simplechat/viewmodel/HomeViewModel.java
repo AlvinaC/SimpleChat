@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.android.simplechat.model.User;
 import com.android.simplechat.rx.SchedulerProvider;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -52,7 +53,9 @@ public class HomeViewModel extends BaseViewModel {
                         for (DocumentChange dc : snapshots.getDocumentChanges()) {
                             if (dc.getType() == DocumentChange.Type.ADDED) {
                                 Log.d(TAG, "New user: " + dc.getDocument().getData());
-                                itemViewModels.add(new ItemViewModel(dc.getDocument().toObject(User.class)));
+                                User user = dc.getDocument().toObject(User.class);
+                                if (!user.getUid().equals(FirebaseAuth.getInstance().getUid()))
+                                    itemViewModels.add(new ItemViewModel(user));
                             }
                         }
                         itemsLiveData.setValue(getItemViewModels());

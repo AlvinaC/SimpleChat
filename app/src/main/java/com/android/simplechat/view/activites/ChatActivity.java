@@ -77,7 +77,7 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding, ChatViewMode
         FirebaseFirestore.setLoggingEnabled(true);
     }
 
-    public static Intent newIntent(Context context) {
+    public static Intent openChatActivity(Context context) {
         Intent intent = new Intent(context, ChatActivity.class);
         return intent;
     }
