@@ -1,5 +1,6 @@
 package com.android.simplechat.view.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,7 +58,7 @@ public class UserListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             case VIEW_TYPE_NORMAL:
                 ItemViewBinding openSourceViewBinding = ItemViewBinding
                         .inflate(LayoutInflater.from(parent.getContext()), parent, false);
-                return new ViewHolder(openSourceViewBinding);
+                return new ViewHolder(openSourceViewBinding, parent.getContext());
             case VIEW_TYPE_EMPTY:
             default:
                 ItemEmptyViewBinding emptyViewBinding = ItemEmptyViewBinding
@@ -81,7 +82,7 @@ public class UserListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     public interface AdapterListener {
 
-        void onRetryClick();
+        void onClick();
     }
 
     public class EmptyViewHolder extends BaseViewHolder implements EmptyItemViewModel.EmptyItemViewModelListener {
@@ -101,17 +102,19 @@ public class UserListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
         @Override
         public void onRetryClick() {
-            mListener.onRetryClick();
+            mListener.onClick();
         }
     }
 
-    public class ViewHolder extends BaseViewHolder implements View.OnClickListener {
+    public class ViewHolder extends BaseViewHolder  {
 
         private final ItemViewBinding mBinding;
+        private final Context context;
 
-        public ViewHolder(ItemViewBinding binding) {
+        public ViewHolder(ItemViewBinding binding, Context context) {
             super(binding.getRoot());
             this.mBinding = binding;
+            this.context = context;
         }
 
         @Override
@@ -124,11 +127,6 @@ public class UserListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             // the next frame. There are times, however, when binding must be executed immediately.
             // To force execution, use the executePendingBindings() method.
             mBinding.executePendingBindings();
-        }
-
-        @Override
-        public void onClick(View view) {
-            ChatActivity.openChatActivity(view.getContext());
         }
     }
 }

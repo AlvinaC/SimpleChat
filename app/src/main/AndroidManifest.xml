@@ -22,6 +22,7 @@
         <activity
             android:name=".view.activites.HomeActivity"
             android:launchMode="singleInstance"></activity>
+        <activity android:name=".view.activites.ChatActivity"></activity>
     </application>
 
 </manifest>
