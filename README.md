@@ -12,8 +12,10 @@ create a project "SimpleChat" and add the google services json file in your proj
 1) Login screen 
 
 a) login with a valid email id as there will be a verification email sent to it
+
 b) after verification login again with same details
-c) users in your project will be shown
+
+c) users in your firestore will be shown
 
 
 
