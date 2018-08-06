@@ -73,6 +73,6 @@ public class ChatActivityModule {
 
     @Provides
     ChatFirestoreAdapter provideChatFirestoreAdapter(ChatActivity activity, FirestoreRecyclerOptions<Chat> options, RxBus bus) {
-        return new ChatFirestoreAdapter(activity, options, bus);
+        return new ChatFirestoreAdapter(options, bus);
     }
 }
