@@ -3,12 +3,10 @@ package com.android.simplechat.view.adapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.simplechat.databinding.ItemEmptyViewBinding;
 import com.android.simplechat.databinding.ItemViewBinding;
-import com.android.simplechat.view.activites.ChatActivity;
 import com.android.simplechat.viewmodel.EmptyItemViewModel;
 import com.android.simplechat.viewmodel.ItemViewModel;
 

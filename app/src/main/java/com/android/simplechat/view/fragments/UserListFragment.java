@@ -13,7 +13,6 @@ import android.view.View;
 import com.android.simplechat.BR;
 import com.android.simplechat.R;
 import com.android.simplechat.databinding.FragmentUserlistBinding;
-import com.android.simplechat.view.activites.ChatActivity;
 import com.android.simplechat.view.adapter.UserListAdapter;
 import com.android.simplechat.viewmodel.HomeViewModel;
 import com.android.simplechat.viewmodel.ItemViewModel;

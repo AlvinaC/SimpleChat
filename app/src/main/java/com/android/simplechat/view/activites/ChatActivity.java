@@ -1,6 +1,5 @@
 package com.android.simplechat.view.activites;
 
-import android.app.Activity;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -24,7 +23,6 @@ import com.android.simplechat.model.Events;
 import com.android.simplechat.rx.RxBus;
 import com.android.simplechat.rx.SchedulerProvider;
 import com.android.simplechat.view.adapter.ChatFirestoreAdapter;
-import com.android.simplechat.view.fragments.UserListFragment;
 import com.android.simplechat.viewmodel.ChatViewModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;

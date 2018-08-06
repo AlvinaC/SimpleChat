@@ -19,9 +19,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.ProviderQueryResult;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-//http://www.zoftino.com/android-firebase-email-password-authentication
-//https://store.raywenderlich.com/products/design-patterns-by-tutorials
-
 public class LoginViewModel extends BaseViewModel {
 
     private final SnackbarMessage mSnackbarText = new SnackbarMessage();

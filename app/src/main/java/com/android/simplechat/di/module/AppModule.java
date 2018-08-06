@@ -5,8 +5,6 @@ import com.android.simplechat.rx.AppSchedulerProvider;
 import com.android.simplechat.rx.RxBus;
 import com.android.simplechat.rx.SchedulerProvider;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 
