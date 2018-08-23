@@ -1,5 +1,6 @@
 package com.android.simplechat.view.activites;
 
+import android.Manifest;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -12,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -23,7 +25,9 @@ import com.android.simplechat.model.Events;
 import com.android.simplechat.rx.RxBus;
 import com.android.simplechat.rx.SchedulerProvider;
 import com.android.simplechat.view.adapter.ChatFirestoreAdapter;
+import com.android.simplechat.view.call.CallActivity;
 import com.android.simplechat.viewmodel.ChatViewModel;
+import com.android.simplechat.web_rtc.utils.Constants;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -33,6 +37,10 @@ import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
+
+import static com.android.simplechat.web_rtc.utils.Constants.RC_CALL;
 
 public class ChatActivity extends BaseActivity<ActivityChatBinding, ChatViewModel> implements FirebaseAuth.AuthStateListener {
 
@@ -218,4 +226,59 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding, ChatViewMode
         super.onDestroy();
         disposable.clear();
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_call:
+                connect();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    //region web rtc
+
+    private void connectToRoom(String roomId) {
+        Intent intent = new Intent(this, CallActivity.class);
+        //intent.putExtra(Constants.EXTRA_ROOMID, receiverUid);
+        intent.putExtra(Constants.EXTRA_ROOMID, generateTimestamp());
+        intent.putExtra(Constants.ARG_RECEIVER_UID, receiverUid);
+        intent.putExtra(Constants.ARG_SENDER, FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+        intent.putExtra(Constants.ARG_RECEIVER, receiver);
+        intent.putExtra(Constants.ARG_SENDERUID, FirebaseAuth.getInstance().getCurrentUser().getUid());
+        intent.putExtra(Constants.ARG_RECEIVER_FIREBASE_TOKEN, firebaseToken);
+        intent.putExtra(Constants.ARG_FIREBASE_TOKEN, new SharedPrefUtil(this).getString(Constants.ARG_FIREBASE_TOKEN));
+        intent.putExtra(Constants.ARG_TYPE, "call");
+        intent.putExtra(Constants.CALL_TYPE, Constants.OUTGOING_CALL);
+        //startActivityForResult(intent, CONNECTION_REQUEST);
+        startActivity(intent);
+    }
+
+    //used as the unique room id
+    private String generateTimestamp() {
+        Long tsLong = System.currentTimeMillis() / 1000;
+        return tsLong.toString();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @AfterPermissionGranted(RC_CALL)
+    private void connect() {
+        String[] perms = {Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO};
+        if (EasyPermissions.hasPermissions(this, perms)) {
+            connectToRoom(getSupportActionBar().getTitle().toString());
+        } else {
+            EasyPermissions.requestPermissions(this, "Need some permissions", RC_CALL, perms);
+        }
+    }
+
+    //endregion
+
 }
