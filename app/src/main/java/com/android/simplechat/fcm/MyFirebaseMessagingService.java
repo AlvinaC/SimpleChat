@@ -12,16 +12,14 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
+import com.android.simplechat.utils.SharedPrefUtil;
+import com.android.simplechat.view.activites.ChatActivity;
+import com.android.simplechat.view.call.CallActivity;
+import com.android.simplechat.web_rtc.utils.Constants;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.inteliment.intelimentchat.R;
-import com.inteliment.intelimentchat.activites.ChatActivity;
-import com.inteliment.intelimentchat.activites.MainActivity;
-import com.inteliment.intelimentchat.activites.call.CallActivity;
-import com.inteliment.intelimentchat.utils.Constants;
-
-
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public static final int CHAT_NOTI = 0;
@@ -38,20 +36,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private String receiverUid;
     private String roomId;
 
-    /**
-     * Called when message is received.
-     *
-     * @param remoteMessage Object representing the message received from Firebase Cloud Messaging.
-     */
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
-        // TODO(developer): Handle FCM messages here.
-        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
+
         Log.d(TAG, "Received msg From: " + remoteMessage.getFrom());
         receiverFcmToken = remoteMessage.getTo();
 
-        // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData() + " getFrom: " + remoteMessage.getFrom());
 
@@ -148,19 +139,30 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
-       /* if(Build.VERSION.SDK_INT>23)
-        {
-            String replyLabel=getResources().getString(R.string.reply_label);
-            RemoteInput remoteInput= new RemoteInput.Builder(KEY_TEXT_REPLY).setLabel(replyLabel).build();
-
-            Notification.Action action=new Notification.Action.Builder(R.drawable.chat_rounded_rect_bg,getString(R.string.reply_label),pendingIntent).addRemoteInput(remoteInput).build();
-            notificationBuilder.addAction(action);
-        }*/
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(0, notificationBuilder.build());
+    }
+
+    @Override
+    public void onNewToken(String token) {
+        Log.d(TAG, "Refreshed token: " + token);
+
+        sendRegistrationToServer(token);
+    }
+
+    private void sendRegistrationToServer(final String token) {
+        new SharedPrefUtil(getApplicationContext()).saveString(Constants.ARG_FIREBASE_TOKEN, token);
+        Log.d(TAG, "sendRegistrationToServer");
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            Log.d(TAG, "sendRegistrationToServer");
+            FirebaseFirestore.getInstance()
+                    .collection("users")
+                    .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .update("firebaseToken", token);
+        }
     }
 
 }

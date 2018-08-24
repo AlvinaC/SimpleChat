@@ -5,6 +5,7 @@ public class User {
     private String name;
     private String uid;
     private String email;
+    private String firebaseToken;
 
     public String getName() {
         return name;
@@ -28,5 +29,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getFirebaseToken() {
+        return firebaseToken;
+    }
+
+    public void setFirebaseToken(String firebaseToken) {
+        this.firebaseToken = firebaseToken;
     }
 }

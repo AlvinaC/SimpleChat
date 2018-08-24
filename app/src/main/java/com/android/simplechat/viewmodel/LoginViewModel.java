@@ -76,6 +76,7 @@ public class LoginViewModel extends BaseViewModel {
         user.setName(currentUser.getDisplayName());
         user.setEmail(currentUser.getEmail());
         user.setUid(currentUser.getUid());
+        user.setFirebaseToken(currentUser.getEmail());
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users").document(currentUser.getUid())

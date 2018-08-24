@@ -24,6 +24,7 @@ import com.android.simplechat.model.Chat;
 import com.android.simplechat.model.Events;
 import com.android.simplechat.rx.RxBus;
 import com.android.simplechat.rx.SchedulerProvider;
+import com.android.simplechat.utils.SharedPrefUtil;
 import com.android.simplechat.view.adapter.ChatFirestoreAdapter;
 import com.android.simplechat.view.call.CallActivity;
 import com.android.simplechat.viewmodel.ChatViewModel;
