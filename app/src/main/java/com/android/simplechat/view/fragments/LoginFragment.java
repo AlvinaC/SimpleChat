@@ -15,9 +15,11 @@ import android.widget.ProgressBar;
 import com.android.simplechat.BR;
 import com.android.simplechat.R;
 import com.android.simplechat.databinding.FragmentLoginBinding;
+import com.android.simplechat.utils.SharedPrefUtil;
 import com.android.simplechat.utils.SnackbarMessage;
 import com.android.simplechat.utils.SnackbarUtils;
 import com.android.simplechat.viewmodel.LoginViewModel;
+import com.android.simplechat.web_rtc.utils.Constants;
 
 import javax.inject.Inject;
 
@@ -79,7 +81,7 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding, LoginViewM
                 String password = mFragmentLoginBinding.etPassword.getText().toString();
                 if (mLoginViewModel.isEmailAndPasswordValid(email, password)) {
                     hideKeyboard();
-                    mLoginViewModel.performLoginOrAccountCreation(email, password);
+                    mLoginViewModel.performLoginOrAccountCreation(email, password, new SharedPrefUtil(getActivity()).getString(Constants.ARG_FIREBASE_TOKEN));
                 } else {
                     mLoginViewModel.setSnackbarMessage(R.string.message_login_8);
                 }

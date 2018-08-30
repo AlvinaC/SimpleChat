@@ -17,7 +17,7 @@ public class ItemViewModel {
     }
 
     public void onClick(View v) {
-        ChatActivity.openChatActivity(v.getContext());
+        ChatActivity.openChatActivity(v.getContext(),this.user.get());
     }
 
 }

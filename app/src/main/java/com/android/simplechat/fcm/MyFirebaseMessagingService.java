@@ -12,6 +12,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
+import com.android.simplechat.R;
 import com.android.simplechat.utils.SharedPrefUtil;
 import com.android.simplechat.view.activites.ChatActivity;
 import com.android.simplechat.view.call.CallActivity;
@@ -61,7 +62,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             } else {
                 // Don't show notification if chat activity is open.
-                if (!MainActivity.isChatActivityOpen()) {
+                /*if (!MainActivity.isChatActivityOpen()) {
                     Log.d(TAG, "Sending chat incoming notifications");
                     sendNotification(title,
                             message,
@@ -70,7 +71,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             fcmToken, type);
                 } else {
                     Log.d(TAG, "chat thread opened. Doing nothing");
-                }
+                }*/
             }
         }
         if (remoteMessage.getNotification() != null) {
@@ -133,7 +134,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         //String CHANNEL_ID = "my_channel_01";
         //NotificationChannel notificationChannel=new NotificationChannel(CHANNEL_ID,title, NotificationManager.IMPORTANCE_HIGH);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext())
-                .setSmallIcon(R.drawable.rsz_inteliment_logo) //need to change
+                .setSmallIcon(R.drawable.accept) //need to change
                 .setContentTitle(title)
                 .setContentText(message)
                 .setAutoCancel(true)

@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ import com.android.simplechat.R;
 import com.android.simplechat.databinding.ActivityChatBinding;
 import com.android.simplechat.model.Chat;
 import com.android.simplechat.model.Events;
+import com.android.simplechat.model.User;
 import com.android.simplechat.rx.RxBus;
 import com.android.simplechat.rx.SchedulerProvider;
 import com.android.simplechat.utils.SharedPrefUtil;
@@ -82,14 +84,16 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding, ChatViewMode
         return R.layout.activity_chat;
     }
 
+    public User user;
+
     static {
         FirebaseFirestore.setLoggingEnabled(true);
     }
 
-    public static void openChatActivity(Context context) {
+    public static void openChatActivity(Context context, User user) {
         Intent intent = new Intent(context, ChatActivity.class);
+        intent.putExtra("receiver", user);
         context.startActivity(intent);
-
     }
 
     @Override
@@ -102,6 +106,8 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding, ChatViewMode
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivityChatBinding = getViewDataBinding();
+        if (getIntent().getExtras() != null)
+            user = getIntent().getExtras().getParcelable("receiver");
         setUpActionBar();
         registerEventBus();
         setUpLayoutManager();
@@ -246,11 +252,11 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding, ChatViewMode
         Intent intent = new Intent(this, CallActivity.class);
         //intent.putExtra(Constants.EXTRA_ROOMID, receiverUid);
         intent.putExtra(Constants.EXTRA_ROOMID, generateTimestamp());
-        intent.putExtra(Constants.ARG_RECEIVER_UID, receiverUid);
+        intent.putExtra(Constants.ARG_RECEIVER_UID, user.getUid());
         intent.putExtra(Constants.ARG_SENDER, FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-        intent.putExtra(Constants.ARG_RECEIVER, receiver);
+        intent.putExtra(Constants.ARG_RECEIVER, user.getName());
         intent.putExtra(Constants.ARG_SENDERUID, FirebaseAuth.getInstance().getCurrentUser().getUid());
-        intent.putExtra(Constants.ARG_RECEIVER_FIREBASE_TOKEN, firebaseToken);
+        intent.putExtra(Constants.ARG_RECEIVER_FIREBASE_TOKEN, user.getFirebaseToken());
         intent.putExtra(Constants.ARG_FIREBASE_TOKEN, new SharedPrefUtil(this).getString(Constants.ARG_FIREBASE_TOKEN));
         intent.putExtra(Constants.ARG_TYPE, "call");
         intent.putExtra(Constants.CALL_TYPE, Constants.OUTGOING_CALL);
@@ -281,5 +287,12 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding, ChatViewMode
     }
 
     //endregion
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.action_menu, menu);
+        return true;
+    }
 
 }
